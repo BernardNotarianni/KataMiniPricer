@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Runtime.Remoting.Metadata.W3cXsd2001;
 using NUnit.Framework;
 
 namespace MiniPricer
@@ -10,6 +9,7 @@ namespace MiniPricer
         private static readonly DateTime Wednesday = new DateTime(2015, 4, 8);
         private static readonly DateTime Friday = new DateTime(2015, 4, 10);
         private static readonly DateTime Monday = new DateTime(2015, 4, 13);
+
         private const double InitialPrice = 100d;
         private const double Volatility = 10d;
 
