@@ -2,10 +2,9 @@
 
 -export ([price/3]).
 
-price (0, InitialPrice, _) ->
+price ({Today,Today}, InitialPrice, _) ->
     InitialPrice;
-price (N, InitialPrice, Volatility) ->
-    price (N-1, InitialPrice, Volatility) * (1 + Volatility/100.0).
-
-
-
+price ({Today,PriceDate}, InitialPrice, Volatility) ->
+    Cal = mini_calendar: new (),
+    NextOpenDay = mini_calendar: next_open_day (Today, Cal),
+    price ({NextOpenDay, PriceDate}, InitialPrice, Volatility) * (1 + Volatility/100.0).
