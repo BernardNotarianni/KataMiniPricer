@@ -9,7 +9,7 @@ new () -> [].
 
 new (BankHolliDays) when is_list (BankHolliDays) -> 
     BankHolliDays.
-    
+
 tommorow (Day, _) ->
     G = calendar: date_to_gregorian_days (Day),
     T = G + 1,
@@ -27,9 +27,9 @@ over_week_end (Date, _, false) ->
 
 over_holliday (Date, Cal) ->
     case lists: member (Date, Cal) of
-	true ->
-	    next_open_day (Date, Cal);
-	_ -> Date
+        true ->
+            next_open_day (Date, Cal);
+        _ -> Date
     end.
 
 is_weekend (Date) ->
@@ -38,4 +38,3 @@ is_weekend (Date) ->
 weekend (6) -> true;
 weekend (7) -> true;
 weekend (_) -> false.
-     

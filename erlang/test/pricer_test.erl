@@ -14,12 +14,17 @@ price_over_weekend_test () ->
     OverWeekend = {friday(), monday()},
     ?assertEqual (110.0, r(pricer: price (OverWeekend, 100, 10))).
 
+prive_over_hollidays_test () ->
+    ThreeDaysWithHolliday = {tuesday(), friday(), [wednesday()]},
+    ?assertEqual (121.0, r(pricer: price (ThreeDaysWithHolliday, 100, 10))).
+
+
 
 tuesday()   -> {2015,4,7}.
 wednesday() -> {2015,4,8}.
 friday()    -> {2015,4,10}.
 monday()    -> {2015,4,13}.
-    
+
 
 r (X) ->
     floor (X * 10000) / 10000.
@@ -30,5 +35,5 @@ floor (X) when X < 0 ->
         true -> T;
         false -> T - 1
     end;
-floor (X) -> 
+floor (X) ->
     trunc (X).
