@@ -3,21 +3,20 @@
 -export ([new/0]).
 -export ([new/1]).
 -export ([next_open_day/2]).
--export ([tommorow/2]).
 
 new () -> [].
 
 new (BankHolliDays) when is_list (BankHolliDays) -> 
     BankHolliDays.
 
-tommorow (Day, _) ->
+tommorow (Day) ->
     G = calendar: date_to_gregorian_days (Day),
     T = G + 1,
     calendar: gregorian_days_to_date (T).
 
 
 next_open_day (Date, Cal) ->
-    T = tommorow (Date, Cal),
+    T = tommorow (Date),
     over_holliday (over_week_end (T, Cal, is_weekend (T)), Cal).
 
 over_week_end (Date, Cal, true) ->

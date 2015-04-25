@@ -1,14 +1,28 @@
 -module (pricer).
 
--export ([price/3]).
+-export ([new/0]).
+-export ([new/1]).
 
-price ({Start,End}, InitialPrice, Volatility) ->
-    price ({Start,End,[]}, InitialPrice, Volatility);
 
-price ({Today,Today,_}, InitialPrice, _) ->
+new () ->
+    Random = fun () -> (random: uniform () * 3) - 2 end,
+    fun (D,I,V) ->
+            price (D,I,V, Random)
+    end.
+
+new (RandomGenerator) ->
+    fun (D,I,V) ->
+            price (D,I,V, RandomGenerator)
+    end.
+
+
+price ({Start,End}, InitialPrice, Volatility, Gen) ->
+    price ({Start,End,[]}, InitialPrice, Volatility,Gen);
+
+price ({Today,Today,_}, InitialPrice, _,_) ->
     InitialPrice;
-price ({Today,PriceDate,Hollidays}, InitialPrice, Volatility) ->
+price ({Today,PriceDate,Hollidays}, InitialPrice, Volatility, Gen) ->
     Cal = mini_calendar: new (Hollidays),
     NextOpenDay = mini_calendar: next_open_day (Today, Cal),
-    price ({NextOpenDay, PriceDate, Hollidays}, InitialPrice, Volatility)
-        * (1 + Volatility/100.0).
+    price ({NextOpenDay, PriceDate, Hollidays}, InitialPrice, Volatility, Gen)
+        * (1 + Gen() * Volatility/100.0).

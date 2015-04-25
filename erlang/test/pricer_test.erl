@@ -2,23 +2,35 @@
 
 -include_lib ("eunit/include/eunit.hrl").
 
+pricer () ->
+    AlwaysUp = fun () -> 1 end,
+    pricer: new (AlwaysUp).
+
 price_over_one_day_test () ->
     OneDay = {tuesday(), wednesday()},
-    ?assertEqual (110.0, r(pricer: price (OneDay, 100, 10))).
+    Pricer = pricer (),
+    ?assertEqual (110.0, r(Pricer (OneDay, 100, 10))).
 
 price_over_3_days_test () ->
     ThreeDays = {tuesday(), friday()},
-    ?assertEqual (133.1, r(pricer: price (ThreeDays, 100, 10))).
+    Pricer = pricer (),
+    ?assertEqual (133.1, r(Pricer (ThreeDays, 100, 10))).
 
 price_over_weekend_test () ->
     OverWeekend = {friday(), monday()},
-    ?assertEqual (110.0, r(pricer: price (OverWeekend, 100, 10))).
+    Pricer = pricer (),
+    ?assertEqual (110.0, r(Pricer (OverWeekend, 100, 10))).
 
-prive_over_hollidays_test () ->
+price_over_hollidays_test () ->
     ThreeDaysWithHolliday = {tuesday(), friday(), [wednesday()]},
-    ?assertEqual (121.0, r(pricer: price (ThreeDaysWithHolliday, 100, 10))).
+    Pricer = pricer (),
+    ?assertEqual (121.0, r(Pricer (ThreeDaysWithHolliday, 100, 10))).
 
-
+price_with_random_generator_test () ->
+    ThreeDays = {tuesday(), friday()},
+    GoingDown = fun () -> -1 end,
+    Pricer = pricer: new (GoingDown),
+    ?assertEqual (72.9, r(Pricer (ThreeDays, 100, 10))).
 
 tuesday()   -> {2015,4,7}.
 wednesday() -> {2015,4,8}.
